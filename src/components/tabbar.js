@@ -42,21 +42,14 @@ const TabBar = props => {
   const {routes, index: activeRouteIndex} = navigation.state;
   const [translateValue] = useState(new Animated.Value(0));
 
-  const toValue = {
-    0: 0,
-    1: tabWidth,
-    2: tabWidth * 2,
-    3: tabWidth * 3,
-  };
-
   useEffect(() => {
-    translateValue.setValue(toValue[activeRouteIndex]);
+    translateValue.setValue(activeRouteIndex * tabWidth);
   }, [tabWidth]);
 
   const onTabBarPress = (route, routeIndex) => {
     onTabPress(route);
     Animated.spring(translateValue, {
-      toValue: toValue[routeIndex],
+      toValue: routeIndex * tabWidth,
       velocity: 10,
       useNativeDriver: true,
     }).start();
