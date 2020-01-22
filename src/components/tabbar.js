@@ -37,9 +37,9 @@ const TabBar = props => {
     navigation,
     dimensions,
   } = props;
-  const tabWidth = dimensions.width / 4;
 
   const {routes, index: activeRouteIndex} = navigation.state;
+  const tabWidth = dimensions.width / routes.length;
   const [translateValue] = useState(new Animated.Value(0));
 
   useEffect(() => {
