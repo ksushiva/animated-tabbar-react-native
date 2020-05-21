@@ -25,7 +25,7 @@ export default function Router() {
             return <Icon name={route} color={tintColor} />;
           },
         })}
-        tabBar={props => <TabBar {...props} />}
+        tabBar={(props) => <TabBar {...props} />}
         tabBarOptions={{
           activeTintColor: '#2FC7FF',
           inactiveTintColor: '#C5C5C5',
@@ -39,41 +39,3 @@ export default function Router() {
     </NavigationContainer>
   );
 }
-
-// const Router = createBottomTabNavigator(
-//   {
-//     Home: {
-//       screen: Home,
-//       navigationOptions: {
-//         tabBarIcon: ({tintColor}) => <Icon name="home" color={tintColor} />,
-//       },
-//     },
-//     Planning: {
-//       screen: Planning,
-//       navigationOptions: {
-//         tabBarIcon: ({tintColor}) => <Icon name="planning" color={tintColor} />,
-//       },
-//     },
-//     Search: {
-//       screen: Search,
-//       navigationOptions: {
-//         tabBarIcon: ({tintColor}) => <Icon name="search" color={tintColor} />,
-//       },
-//     },
-//     Settings: {
-//       screen: Settings,
-//       navigationOptions: {
-//         tabBarIcon: ({tintColor}) => <Icon name="settings" color={tintColor} />,
-//       },
-//     },
-//   },
-//   {
-//     tabBarComponent: TabBar,
-//     tabBarOptions: {
-//       activeTintColor: '#2FC7FF',
-//       inactiveTintColor: '#C5C5C5',
-//     },
-//   },
-// );
-
-// export default createAppContainer(Router);
