@@ -6,13 +6,13 @@ In this repository you will find the code source of an animated tabbar built in 
 **For iOS:**
 
 ```sh
-yarn
+npm i
 cd ios && pod install
 
 react-native run-ios
 ```
 **For Android:**
 ```sh
-yarn
+npm i
 react-native run-android
 ```
