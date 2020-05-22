@@ -8,10 +8,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const icons = {
-  home: faHome,
-  search: faSearch,
-  planning: faClock,
-  settings: faCog,
+  Home: faHome,
+  Search: faSearch,
+  Planning: faClock,
+  Settings: faCog,
 };
 
 const Icon = ({name, color}) => {

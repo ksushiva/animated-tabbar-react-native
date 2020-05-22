@@ -3,6 +3,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, StyleSheet, Animated} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
+import Icon from './icon';
 import withDimensions from './with-dimensions';
 
 const S = StyleSheet.create({
@@ -26,19 +27,15 @@ const S = StyleSheet.create({
   },
 });
 
-const TabBar = props => {
-  const {
-    renderIcon,
-    activeTintColor,
-    inactiveTintColor,
-    onTabPress,
-    onTabLongPress,
-    getAccessibilityLabel,
-    navigation,
-    dimensions,
-  } = props;
-
-  const {routes, index: activeRouteIndex} = navigation.state;
+function TabBar({
+  state,
+  descriptors,
+  navigation,
+  dimensions,
+  activeTintColor,
+  inactiveTintColor,
+}) {
+  const {routes, index: activeRouteIndex} = state;
   const tabWidth = dimensions.width / routes.length;
   const [translateValue] = useState(new Animated.Value(0));
 
@@ -46,8 +43,22 @@ const TabBar = props => {
     translateValue.setValue(activeRouteIndex * tabWidth);
   }, [tabWidth]);
 
-  const onTabBarPress = (route, routeIndex) => {
-    onTabPress(route);
+  const onTabPress = (route, routeIndex) => {
+    const isFocused = state.index === routeIndex;
+
+    const event = navigation.emit({
+      type: 'tabPress',
+      target: route.key,
+      canPreventDefault: true,
+    });
+
+    if (!isFocused && !event.defaultPrevented) {
+      navigation.navigate(route.name);
+    }
+  };
+
+  const updatePositioning = (route, routeIndex) => {
+    onTabPress(route.route, routeIndex);
     Animated.spring(translateValue, {
       toValue: routeIndex * tabWidth,
       velocity: 10,
@@ -72,28 +83,33 @@ const TabBar = props => {
             </Animated.View>
           </View>
         </View>
+
         {routes.map((route, routeIndex) => {
+          const options = descriptors[route.key];
           const isRouteActive = routeIndex === activeRouteIndex;
+
           const tintColor = isRouteActive ? activeTintColor : inactiveTintColor;
+
+          isRouteActive && updatePositioning({route}, routeIndex);
 
           return (
             <TouchableOpacity
               key={routeIndex}
               style={S.tabButton}
               onPress={() => {
-                onTabBarPress({route}, routeIndex);
+                updatePositioning({route}, routeIndex);
               }}
               onLongPress={() => {
-                onTabLongPress({route});
+                updatePositioning({route}, routeIndex);
               }}
-              accessibilityLabel={getAccessibilityLabel({route})}>
-              {renderIcon({route, focused: isRouteActive, tintColor})}
+              accessibilityLabel={options.tabBarAccessibilityLabel}>
+              <Icon name={route.name} color={tintColor} />
             </TouchableOpacity>
           );
         })}
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default withDimensions(TabBar);
